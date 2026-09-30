@@ -1,0 +1,20 @@
+{
+  "workflowTitle": "Peer Analysis — Financial Institutions",
+  "parameters": [
+    {
+      "pattern": "counterparty_name",
+      "title": "Counterparty Name",
+      "description": "The bank, insurer, or other financial institution to be analysed as the target.",
+      "type": "Company",
+      "isRequired": true
+    },
+    {
+      "pattern": "peers",
+      "title": "Peers",
+      "description": "Enter specific peer names or IDs to compare against the target, or simply enter a number (e.g. \"3\") to auto-select that many peers from Moody's peer data for the target institution.",
+      "type": "FreeForm",
+      "isRequired": false,
+      "value": ""
+    }
+  ]
+}

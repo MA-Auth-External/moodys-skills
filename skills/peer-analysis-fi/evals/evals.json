@@ -1,0 +1,73 @@
+{
+  "skill_name": "peer-analysis-fi",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "Run a peer analysis for Citigroup Inc.",
+      "expected_output": "A complete standalone HTML document (doctype -> </html>) built from this skill's assets/template.html, written to /mnt/user-data/outputs/citigroup-inc_peer_analysis_fi.html and surfaced via present_files. No fenced ```html code block and no raw HTML printed in the chat message. Target = Citigroup Inc. with 3 credit peers from getEntityPeers, all core pa-* placeholders populated, rating cards with the fixed 7-row field order, 4x4 Credit Drivers bullet grid, 6-panel Key Indicators trend charts, 8x4 Scorecard, PD cards in Section 3 (no chart), single-paragraph ESG analysis, Key Takeaways table + 2-paragraph Conclusion, and a single end-of-document Citations list.",
+      "files": [],
+      "assertions": [
+        "Response does not contain a ```html fenced code block or raw <!doctype html> in the chat message text",
+        "A file matching *_peer_analysis_fi.html was written under /mnt/user-data/outputs and presented via present_files",
+        "The delivered file is a complete standalone HTML document (doctype + </html>)",
+        "File uses the skill's template scaffold (core pa-* IDs present, unmodified section order)",
+        "#pa-target-company, #pa-peer-count, #pa-report-date, #pa-footer-date all non-empty",
+        "#pa-company-chips has 4 chips, target first with class 'company-chip target'",
+        "#pa-exec-summary contains exactly one <p> of roughly 280-300 words",
+        "<tbody id=\"pa-peers-table\"> has 4 <tr> rows (target + 3 peers)",
+        "#pa-rating-cards has 4 .rating-card blocks (target first, target has rc-target-tag), each with exactly 7 .rc-row entries in the fixed order (Long-Term Rating, Outlook, Short-Term Rating, BCA/Adj. BCA, CR Assessment, CR Rating, Deposit Rating)",
+        "#pa-macro-profile is a single 3-4 sentence paragraph covering only the target's country",
+        "All 4 #pa-cd-col-1..4 headers populated and all 16 #pa-cd-r{1-4}-c{1-4} cells are <ul><li> bullet lists with 2-4 items each (no bare prose)",
+        "#pa-ki-charts contains exactly 1 .ki-fy-header, 3 .ki-camels-label dividers, and 6 .chart-container panels, each with an inner <svg viewBox=\"0 0 560 260\">",
+        "#pa-sc-col-1..4 populated and all 8 rows x 4 institutions x 2 sub-columns (-hist/-score) are populated, with rows 6-8 showing '\u2014' in -hist",
+        "#pa-pd-panel contains one .pd-card per institution (target first, target has pd-card-target + PD Signal row) OR is empty with pd_comparison treated as null when PD data is unavailable",
+        "Section 3 contains no <svg>, no .chart-container, and no comparison table (PD section renders cards + prose only)",
+        "#pa-esg-heatmap contains a colour-coded institution/CIS/E/S/G table",
+        "#pa-esg-analysis contains exactly one <p> element (~60-100 words), no bullet points or sub-headings",
+        "#pa-conclusion contains a div.key-takeaways table with <= 7 rows using only kt-stronger/kt-weaker/kt-aligned span classes, followed by exactly 2 <p> paragraphs",
+        "Exactly one #pa-sources citations block exists; no per-section .section-citations recap blocks (no #pa-cite-* elements) appear anywhere in the document",
+        "No internal MCP tool names (e.g. getEntityFinancials_v2, getCreditOpinion) appear in .source-meta or .source-note text"
+      ]
+    },
+    {
+      "id": 2,
+      "prompt": "I need a bank peer comparison for Wells Fargo & Company against JPMorgan Chase, Bank of America, and PNC Financial Services",
+      "expected_output": "Same file-delivery contract and structural requirements as eval-1, but tests explicit user-supplied peers (rather than getEntityPeers auto-selection) and the operating-bank-vs-holding-company entity resolution rule for narrative sections.",
+      "files": [],
+      "assertions": [
+        "Response does not contain a ```html fenced code block or raw <!doctype html> in the chat message text",
+        "A file matching *_peer_analysis_fi.html was written under /mnt/user-data/outputs and presented via present_files",
+        "The delivered file is a complete standalone HTML document (doctype + </html>)",
+        "#pa-peer-count reads 3 and #pa-company-chips has exactly 4 chips (target + the 3 explicitly named peers, not auto-selected substitutes)",
+        "<tbody id=\"pa-peers-table\">, #pa-rating-cards, and the Credit Drivers/Scorecard tables all reflect Wells Fargo, JPMorgan Chase, Bank of America, and PNC specifically (target first)",
+        "#pa-rating-cards has 4 .rating-card blocks each with exactly 7 .rc-row entries in the fixed order, using N/A rather than a dropped row for any inapplicable field",
+        "All 16 #pa-cd-r{1-4}-c{1-4} Credit Drivers cells are <ul><li> bullet lists (2-4 items), synthesized from holding-company-level Credit Opinion narrative sections where an operating-bank ID was resolved",
+        "#pa-ki-charts contains 6 .chart-container SVG line-chart panels (viewBox 0 0 560 260) grouped under 3 .ki-camels-label dividers",
+        "#pa-sc-col-1..4 and all 8x4 scorecard rows populated, sourced from RatingFactors (not BankFocus)",
+        "Section 3 has no <svg>/.chart-container/comparison table; #pa-pd-panel (if not suppressed) shows 4 .pd-card blocks target-first",
+        "#pa-esg-analysis is exactly one <p> (no splits)",
+        "#pa-conclusion has a key-takeaways table (<=7 rows) followed by exactly 2 <p> paragraphs",
+        "Single #pa-sources block only; no mid-document per-section citation recaps"
+      ]
+    },
+    {
+      "id": 3,
+      "prompt": "Compare MetLife's credit profile against its closest insurance peers",
+      "expected_output": "Same file-delivery contract and structural requirements as eval-1, applied to an insurer where deposit-taking fields (Deposit Rating) are not applicable and CAMELS-style Key Indicators substitute insurer-appropriate ratios. Tests sector flex within the FI skill (insurer vs. bank) and the N/A-not-dropped-row rule.",
+      "files": [],
+      "assertions": [
+        "Response does not contain a ```html fenced code block or raw <!doctype html> in the chat message text",
+        "A file matching *_peer_analysis_fi.html was written under /mnt/user-data/outputs and presented via present_files",
+        "The delivered file is a complete standalone HTML document (doctype + </html>)",
+        "#pa-rating-cards has 4 .rating-card blocks (target first) each with all 7 .rc-row fields present, with Deposit Rating explicitly set to N/A rather than omitted for the insurer(s)",
+        "All 16 #pa-cd-r{1-4}-c{1-4} Credit Drivers cells are <ul><li> bullet lists (2-4 items) with no upgrade/downgrade mirrored-polarity duplicates within the same institution column",
+        "#pa-ki-charts contains 6 .chart-container SVG panels using the best-available CAMELS-analogous ratios for the sector, each with a .chart-title naming the actual metric used (not a fixed generic label)",
+        "#pa-sc-col-1..4 and all 8x4 scorecard rows populated from RatingFactors, rows 6-8 showing '\u2014' in -hist",
+        "#pa-macro-profile covers only the target's country of domicile; #pa-macro-peers is populated only if a peer is domiciled in a different country, otherwise left empty",
+        "#pa-esg-heatmap and single-paragraph #pa-esg-analysis both populated",
+        "#pa-conclusion has a key-takeaways table (<=7 rows, materiality-ordered) followed by exactly 2 <p> paragraphs",
+        "Single #pa-sources block only, with friendly source labels (e.g. 'Moody's Analytics BankFocus') rather than raw MCP tool names"
+      ]
+    }
+  ]
+}

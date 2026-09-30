@@ -1,0 +1,16 @@
+{
+  "name": "moodys-skills",
+  "version": "0.1.0",
+  "license": "Apache-2.0",
+  "description": "Skills for Moody's MCP tools",
+  "author": {
+    "name": "Moody's"
+  },
+  "skills": "../skills/",
+  "mcpServers": "../.mcp.json",
+  "interface": {
+    "displayName": "Moody's Skills",
+    "shortDescription": "Skills for Moody's MCP tools",
+    "developerName": "Moody's"
+  }
+}

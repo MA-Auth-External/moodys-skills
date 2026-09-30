@@ -1,0 +1,12 @@
+version: 0.2
+
+phases:
+  build:
+    commands:
+     echo "No build steps required for skills repo"
+
+artifacts:
+  base-directory: "."
+  files:
+    - "**/*"
+  exclude-paths: "node_modules/**/*"
